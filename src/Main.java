@@ -13,6 +13,10 @@ public class Main {
         // TODO:    DONE    check for win conditions on Rows Lines and Diagonals
         // TODO:    DONE    check for a tie
 
+        //TODO: DONE logic for player turns does not repeat
+        //TODO: add validation for already occupied board spaces so players can not overwrite each other
+        //TODO:
+
         Scanner scanner = new Scanner(System.in);
 
         char[][] playBoard = new char[3][3];
@@ -30,28 +34,8 @@ public class Main {
         printBoard(playBoard);
 
         while (true) {
-
-            System.out.println("Player " + p1 + ": ");
-            changeBoard(playBoard, numBoard, getPlaceInput(scanner), p1);
-            printBoard(playBoard);
-            if (checkWinConRow(playBoard, p1, winCon) || checkWinConCol(playBoard, p1, winCon) || checkWinConDia(playBoard, p1, winCon)) {
-                System.out.println("Player " + p1 + " WINS!");
+            if (turn(scanner, numBoard, playBoard, p1, filler, winCon) || turn(scanner, numBoard, playBoard, p2, filler, winCon))
                 break;
-            } else if (checkTie(playBoard, filler)) {
-                System.out.println("TIE!");
-                break;
-            }
-
-            System.out.println("Player " + p2 + ": ");
-            changeBoard(playBoard, numBoard, getPlaceInput(scanner), p2);
-            printBoard(playBoard);
-            if (checkWinConRow(playBoard, p2, winCon) || checkWinConCol(playBoard, p2, winCon) || checkWinConDia(playBoard, p2, winCon)) {
-                System.out.println("Player " + p2 + " WINS!");
-                break;
-            } else if (checkTie(playBoard, filler)) {
-                System.out.println("TIE!");
-                break;
-            }
         }
     }
 
@@ -172,5 +156,21 @@ public class Main {
             }
         }
         return false;
+    }
+
+    public static boolean turn(Scanner scanner, char[][] bordN, char[][] boardP, char p, char f, int w) {
+
+        System.out.println("Player " + p + ": ");
+        changeBoard(boardP, bordN, getPlaceInput(scanner), p);
+        printBoard(boardP);
+        if (checkWinConRow(boardP, p, w) || checkWinConCol(boardP, p, w) || checkWinConDia(boardP, p, w)) {
+            System.out.println("Player " + p + " WINS!");
+            return true;
+        } else if (checkTie(boardP, f)) {
+            System.out.println("TIE!");
+            return true;
+        } else {
+            return false;
+        }
     }
 }
